@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0b1026">
+    <title>🌷 Para Kiara 🌷</title>
+    <style>
+        /* --- 1. FONDO Y TIPOGRAFÍA --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0b1026;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 15px;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #ff00de, 0 0 20px #ff00de, 0 0 40px #ff00de;
+            animation: palpitar 2s infinite alternate;
+        }
+        
+        @keyframes palpitar {
+            from { text-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de; }
+            to { text-shadow: 0 0 20px #ff00de, 0 0 30px #ff00de; }
+        }
+
+        p.subtitulo { font-size: 1rem; color: #ccc; margin-bottom: 25px; }
+
+        /* --- 2. GRILLA --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-width: 450px;
+            margin: 0 auto;
+            padding-bottom: 60px;
+            perspective: 1000px;
+        }
+
+        .box {
+            border-radius: 10px;
+            height: 70px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+            user-select: none;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            transform-style: preserve-3d;
+        }
+
+        .box:active { transform: scale(0.90); }
+
+        /* ESTILO A: Cajas Plateadas */
+        .box.plata {
+            background: linear-gradient(145deg, #a8aeb2, #6e777d);
+            border: 2px solid #b0b8bc;
+            color: #fff;
+        }
+
+        /* ESTILO B: Cajas Doradas */
+        .box.oro {
+            background: linear-gradient(145deg, #ffd700, #c5a028);
+            border: 3px solid #ffffbe;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.9), 0 0 50px rgba(255, 215, 0, 0.5);
+            z-index: 2; 
+            font-size: 24px; 
+        }
+
+        /* ESTILO C: DÍA 24 (TULIPÁN CÓSMICO) */
+        .box.final {
+            background: linear-gradient(135deg, #ff00de, #9900ff);
+            border: 3px solid #fff;
+            color: #fff;
+            box-shadow: 0 0 30px rgba(255, 0, 222, 0.8); 
+            z-index: 10;
+            font-size: 26px;
+            animation: latido 1.5s infinite alternate; 
+        }
+
+        @keyframes latido {
+            from { transform: scale(1); box-shadow: 0 0 30px rgba(255, 0, 222, 0.8); }
+            to { transform: scale(1.08); box-shadow: 0 0 60px rgba(255, 0, 222, 1); }
+        }
+
+        /* Estilos Abiertos */
+        .box.plata.open { background: #2c2c2c; border-color: #444; color: #555; }
+        .box.oro.open { background: #4a3c1b; border-color: #665c3b; color: #775c08; box-shadow: none; }
+        .box.final.open { background: #4a004a; border-color: #880088; color: #d46cd4; box-shadow: none; animation: none; }
+
+        /* --- 3. ANIMACIONES --- */
+        .anim-giro { animation: vuelta 0.6s ease forwards; }
+        @keyframes vuelta { 100% { transform: rotateY(360deg); } }
+
+        .anim-romper { animation: explotar 0.5s ease forwards; }
+        @keyframes explotar { 
+            0% { transform: scale(1); }
+            40% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- 4. MODAL --- */
+        .modal {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Estilo Base */
+        .modal-content {
+            background: #fff;
+            color: #333;
+            padding: 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 25px rgba(255,255,255,0.1);
+            animation: aparecer 0.3s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        /* Estilo DORADO (Días Especiales) */
+        .modal-content.especial {
+            background: linear-gradient(135deg, #fffcf2, #ffeb99);
+            border: 4px solid #d4af37;
+            color: #5c4b12;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8);
+        }
+        
+        /* Estilo CÓSMICO (Día 24) - NUEVO */
+        .modal-content.final {
+            background: linear-gradient(135deg, #fcecfc, #e0b0ff); /* Lavanda muy suave */
+            border: 4px solid #ff00de; /* Borde Neón Rosa */
+            color: #4a004a; /* Texto Violeta Oscuro */
+            box-shadow: 0 0 60px rgba(255, 0, 222, 0.9);
+        }
+
+        /* Títulos */
+        .modal h2 { color: #d63384; margin-top: 0; font-size: 1.8rem; }
+        .modal-content.especial h2 { color: #d4af37; text-transform: uppercase; letter-spacing: 2px; }
+        .modal-content.final h2 { color: #ff00de; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 5px rgba(255,0,222,0.3); }
+
+        /* Botón Cerrar */
+        .close-btn {
+            background-color: #d63384; color: white; border: none;
+            padding: 12px 30px; border-radius: 50px; font-size: 16px;
+            font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%;
+            box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3);
+        }
+        .modal-content.especial .close-btn { background-color: #d4af37; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5); }
+        .modal-content.final .close-btn { background-color: #ff00de; box-shadow: 0 4px 15px rgba(255, 0, 222, 0.5); }
+
+        @keyframes aparecer { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+
+        /* --- 5. EXTRAS --- */
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .contenido-texto { font-size: 1.1rem; line-height: 1.5; }
+        iframe { width: 100%; border-radius: 12px; margin-top: 15px; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        img.regalo-img { max-width: 100%; border-radius: 10px; margin: 15px 0; max-height: 250px; object-fit: cover;}
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-bg"></canvas>
+
+    <h1>🌷 KIARA 🌷</h1>
+    <p class="subtitulo">Una pequeña sorpresa cada día.</p>
+    
+    <div class="grid-container" id="calendar"></div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Día X</h2>
+            <div id="modalBody" class="contenido-texto"></div>
+            <button class="close-btn" onclick="closeModal()">¡Gracias!</button>
+        </div>
+    </div>
+
+    <script>
+        //localStorage.clear();
+        // ==========================================
+        // CONFIGURACIÓN DE CONTENIDO
+        // ==========================================
+        const regalos = {
+            1: "<b>¡Bienvenida A Tu Diciembre!</b> 🌷<br>Aquí empieza tu cuenta regresiva.<br><img src='dia1.jpg' class='regalo-img'><br>Aquí empieza la cuenta regresiva. No podía empezar este calendario sin enviarte unos tulipanes (aunque sean virtuales... por ahora). Espero que este mes esté lleno de cosas bonitas y empieces el mes con una sonrisa.",
+            
+            2: "Para empezar el mes con buena vibra 🎵<br>(Dale play y relájate un rato)<br><br><video width='100%' controls autoplay style='border-radius:10px; max-height: 250px;'><source src='dia2.mp4' type='video/mp4'>Tu navegador no soporta videos.</video>",
+            
+            3: "<b>Diagnóstico del día:</b> 🐶<br>Tienes niveles peligrosamente bajos de risa. <br>Aquí tienes el tratamiento:<br><img src='https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaWc4ZWhhdmJ0NGw1OGMwN3Q1aGxzNmd6MTg2aTJ4djB0OHoxbnEwcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BpIjIW29NfVh6/giphy.gif' class='regalo-img'><br>(Tú puedes con todo lo que venga hoy 💪)",
+            
+            4: "✨ <b>Recordatorio:</b><br>A veces el cielo se cierra<br>y el mundo parece un lugar inmenso y gris,<br>pero no olvides que las nubes son pasajeras<br>y el sol, aunque escondido, jamas deja de existir.<br>'No necesitas poder con todo a la vez'.<br>Respira, toma agua y ve paso a paso.<br>Estás haciéndolo genial.",
+            
+            5: "🎫 <b>¡VALE DE EMERGENCIA!</b> 🎫<br>Este regalo es físico.<br>Vale por unas <b>Gomitas Trululu</b> 🍬<br><i>(Ideales para días de estrés o antojos).</i><br>Avísame para dártelo.",
+            
+            6: "🤓 <b>Dato random para veterinarios:</b><br>Las nutrias se dan la mano cuando duermen para no separarse flotando.<br><img src='dia6.jpg' class='regalo-img'><br>Así de aferrado estoy yo a la idea de que tengas un buen día hoy.",
+            
+            7: "🎶 <b>Sábado de recuerdos</b><br>Imposible no acordarme de ti con esta canción (y de cuando te conocí).<br>Súbele volumen y báilala.<br><br><video controls autoplay loop style='border-radius:10px; width: 100%; max-width: 350px; aspect-ratio: 4 / 3; object-fit: cover; display: block; margin: 15px auto; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);'><source src='dia7.mp4' type='video/mp4'>Tu navegador no soporta videos.</video>",
+            
+            8: "🚫 <b>PROHIBIDO ESTRESARSE</b> 🚫<br>Hoy es domingo y tu única obligación es recargar baterías.<br><br><img src='dia8.gif' class='regalo-img'><br>Espero que tu nivel de paz hoy sea similar al de este Gif. 😴☕",
+            
+            9: "🌹 <b>Intento de Poesía:</b><br><i>'Las rosas son rojas,<br>los vientos soplan fuerte,<br>aquí va un chiste malo,<br>para desearte suerte.'</i><br><br><b>Con fe y tienes una sonrisa ahora mismo:</b><br>— ¿Qué le dice un jardinero a otro?<br>— Disfrutemos mientras podamos.<br>(Perdón, tenía que hacerlo 🌷)<br><br><video controls autoplay style='border-radius:10px; max-height: 250px; width: auto; max-width: 100%; display: block; margin: 0 auto;'><source src='dia9.mp4' type='video/mp4'>Tu navegador no soporta videos.</video>",
+            
+           10: "✨ <b>Nota para la futura Vet:</b><br>Sé que la carrera es pesada y a veces los libros parecen infinitos. Pero no olvides lo brillante que eres.<br><br><img src='dia10.jpg' class='regalo-img'><br>Todo este esfuerzo, las desveladas y el estrés van a valer la pena.<br>Respira profundo. <b>¡Tú puedes con esto y más!</b> 💪",
+            
+            11: "<b>Mitad de semana con historia:</b><br>Me comenzó a gustar esta canción desde que la cantó Dua Lipa 🎤😅<br>Uff, es un temazo y tenía muchas ganas de compartirlo contigo hoy.<br>¡Súbele! 🔊<br><br><video controls autoplay loop style='border-radius:10px; width: 100%; max-width: 350px; aspect-ratio: 4 / 3; object-fit: cover; display: block; margin: 15px auto; box-shadow: 0 4px 15px rgba(200, 200, 200, 0.5);'><source src='dia11.mp4' type='video/mp4'>Tu navegador no soporta videos.</video>",
+
+            12: "🎫 <b>¡SORPRESA DULCE!</b> 🎫<br>Como sé que el chocolate no es lo tuyo...<br>Vale por unos <b>SKITTLES</b> 🌈<br>Para ponerle color a la semana.<br>Canjeable con el administrador de la web.",
+            
+            13: "📍 <b>Punto de Control: Mitad de Diciembre</b><br>Ya pasaron 12 días. 🏔️<br>Sé que este mes es una locura entre la universidad, los pendientes y el caos de fin de año.<br><br><img src='dia13.jpg' class='regalo-img'><br>Solo quería recordarte que lo estás haciendo genial. Respira, tómate un café (o un té) y date un respiro. Ya falta menos. ✨",
+            
+            14: "📸 <b>Reporte de estado requerido:</b><br>Yo aquí, esperando pacientemente a ver qué estás haciendo...<br><br><img src='dia14.gif' class='regalo-img'><br><b>Reto rápido:</b> Mándame una foto de ti y de lo que estes haciendo ahora mismo (o de tu mascota/paciente).<br>Yo te respondo con una mía. 👀",
+            
+            15: "📚 <b>Duda existencial veterinaria:</b><br>Tú que te lees los libros de etología y anatomía... ¿En qué página explican este comportamiento?<br><br><img src='dia15.gif' class='regalo-img'><br>Necesito tu opinión profesional: ¿Es un error en la Matrix o solo es un gato siendo gato? 😹",
+            
+            16: "💃 <b>Protocolo de Viernes:</b><br>Según mis cálculos, es hora de cerrar los libros y subirle el volumen.<br><br>Esta canción es un clásico y la letra... bueno, tú escucha la letra. 👀<br><br><video controls autoplay style='border-radius:10px; max-height: 350px; width: auto; max-width: 100%; display: block; margin: 0 auto;'><source src='dia16.mp4' type='video/mp4'>Tu navegador no soporta videos.</video>",
+            
+            17: "✨ <b>Reflexión de Domingo:</b><br><br>Dicen que el infinito queda muy lejos,<br>que el cielo es inalcanzable.<br>Pero yo tengo mi propia teoría...<br><br><img src='dia17.jpg' class='regalo-img'><br><br><i>'Algunas personas necesitan un telescopio para mirar las estrellas...<br>pero yo solo necesito ver tus ojos para ver el universo.'</i> 🌌",
+            
+            18: "😂 <b>Pregunta existencial:</b><br>¿Por qué los pájaros no usan Facebook?<br>.<br>.<br>.<br>Porque ya tienen Twitter. 🐦<br><img src='dia18.gif' class='regalo-img'><br>(Después de la poesía de ayer, hoy tocaba un chiste malo para equilibrar el universo, ademas se me acaban las ideas XD).",
+            
+            19: "📦 <b>¡ULTIMO DELIVERY!</b> 📦<br>Tengo un detalle pequeño para ti.<br>No es un vale, es algo real.<br>Escríbeme para coordinar la entrega. 👀",
+            
+            20: "🧠 <b>Momento Nerd:</b><br>Seguro ya lo sabes, pero me pareció un dato genial:<br>La nariz de los gatos tiene un patrón único e irrepetible, igual que nuestras huellas dactilares.<br><br><img src='dia20.gif' class='regalo-img'><br>Apuesto a que ahora vas a querer mirarle la nariz de cerca a. 🔍🐱 <br>Espero que tengas un dia maravillo al igual que tu sonrisa",
+            
+           21: "🎵 <b>Soundtrack Especial:</b><br>Empezamos el mes con tulipanes virtuales, y quería cerrarlo con este ballenato.<br><br><i>'Te quiero, no lo niego,<br>me quieres no lo sé,<br>pero de algo estoy seguro,<br>que yo de ti me enamoré.'</i> <br><br><video width='100%' controls autoplay style='border-radius:10px; max-height: 250px;'><source src='dia21.mp4' type='video/mp4'>Tu navegador no soporta videos.</video><br><br><b>¡Que tengas un feliz día, la vida es hermosa! ✨</b>",
+            
+            22: "🎄 <b>Reporte de Daños:</b><br>Mi espíritu navideño está al 100%, pero mi organización de regalos está al 10%. 📉<br><br><img src='dia22.gif' class='regalo-img'><br>¿Tú cómo vas? ¿Ya tienes todo listo o vas a correr el mismo 24? 🎁🏃‍♂️",
+            
+            23: "⏳ <b>Tic-Tac...</b><br>Solo falta un día para Navidad (y para que se acabe este calendario).<br><br><img src='dia23.gif' class='regalo-img'><br>Espero que hayas disfrutado abrir estas cajitas tanto como yo disfruté armarlas.<br>¡Descansa bien hoy! Mañana toca celebrar. ✨",
+            
+            24: "🎄 <b>¡FELIZ NAVIDAD KIARA!</b> 🎄<br>Llegamos al final. Dicen que los mejores regalos están bajo el árbol, pero mi regalo favorito de este año fue coincidir contigo.<br><br>Quería despedirme con esta frase:<br><i>'La única curva buena de una mujer no es su cintura, sino su sonrisa.'</i> ✨<br><br><video controls autoplay loop muted style='border-radius:10px; width: 100%; max-width: 350px; aspect-ratio: 4 / 3; object-fit: cover; display: block; margin: 15px auto; box-shadow: 0 4px 15px rgba(255, 0, 222, 0.4);'><source src='dia24.mp4' type='video/mp4'>Tu navegador no soporta videos.</video><br><br>Gracias por dejarme acompañarte estos 24 días. Que tengas una noche mágica. ¡Un fuerte abrazo de corazón!",
+        };
+
+        // ==========================================
+        // CONFIGURACIÓN TÉCNICA
+        // ==========================================
+        const container = document.getElementById('calendar');
+        const modal = document.getElementById('myModal');
+        const modalContent = document.querySelector('.modal-content');
+
+        const letraK = [1, 5, 9, 13, 17, 21, 4, 7, 10, 14, 19, 24]; 
+        const diasEspeciales = [5, 12, 19]; 
+
+        // ⚠️ ATENCIÓN: PON ESTO EN 'false' CUANDO YA TENGAS LOS LINKS PUESTOS
+        const TEST_MODE = false; 
+
+        for (let i = 1; i <= 24; i++) {
+            let box = document.createElement('div');
+            box.innerText = i;
+            
+            // --- ASIGNACIÓN DE ESTILOS DE CAJA ---
+            if (i === 24) {
+                box.className = 'box final';
+            } else if (letraK.includes(i)) {
+                box.className = 'box oro';
+            } else {
+                box.className = 'box plata';
+            }
+
+            if(localStorage.getItem('dia-'+i)) { box.classList.add('open'); }
+            box.onclick = () => abrirRegalo(i, box);
+            container.appendChild(box);
+        }
+
+        function abrirRegalo(dia, elemento) {
+            const fecha = new Date();
+            const esDiciembre = fecha.getMonth() === 11; 
+            const diaHoy = fecha.getDate();
+
+            if (TEST_MODE || (esDiciembre && dia <= diaHoy)) {
+                if (!elemento.classList.contains('open')) {
+                    if (Math.random() > 0.5) { elemento.classList.add('anim-giro'); } 
+                    else { elemento.classList.add('anim-romper'); }
+                    
+                    localStorage.setItem('dia-'+dia, 'abierto');
+                    setTimeout(() => {
+                        elemento.classList.add('open'); 
+                        mostrarModal(dia);
+                    }, 600);
+                } else {
+                    mostrarModal(dia);
+                }
+            } else {
+                // MODIFICACIÓN: Usar la ventana bonita en vez de la alerta fea
+                document.getElementById('modalTitle').innerText = "¡Alto ahí! ✋";
+                document.getElementById('modalBody').innerHTML = "⏳ <b>No viajes al futuro.</b><br><br>Tienes que tener paciencia.<br>Este regalo se abre el día " + dia + ".";
+                
+                // Asegurarnos de que la ventana se vea normal (sin dorado ni rosado)
+                modalContent.classList.remove('especial', 'final');
+                
+                modal.style.display = "flex";
+            }
+        }
+
+        function mostrarModal(dia) {
+            let contenido = regalos[dia] || "✨ ¡Sorpresa!";
+            document.getElementById('modalTitle').innerText = "Día " + dia;
+            document.getElementById('modalBody').innerHTML = contenido;
+            
+            // --- LÓGICA DE COLORES DEL MODAL ---
+            // 1. Limpiamos clases anteriores
+            modalContent.classList.remove('especial', 'final');
+
+            // 2. Aplicamos la clase correcta
+            if (dia === 24) {
+                modalContent.classList.add('final'); // Estilo Rosa/Violeta Cósmico
+            } else if (diasEspeciales.includes(dia)) {
+                modalContent.classList.add('especial'); // Estilo Dorado
+            }
+
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            modal.style.display = "none";
+        }
+
+        // ==========================================
+        // EFECTO LLUVIA
+        // ==========================================
+        const canvas = document.getElementById("canvas-bg");
+        const ctx = canvas.getContext("2d");
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const particles = [];
+        const emojis = ["❄️", "❄️", "🌷", "✨"]; 
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.speed = Math.random() * 1.5 + 0.5;
+                this.size = Math.random() * 15 + 10;
+                this.text = emojis[Math.floor(Math.random() * emojis.length)];
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.swing = Math.random() * 2; 
+                this.swingCount = 0;
+            }
+            update() {
+                this.y += this.speed;
+                this.swingCount += 0.05;
+                this.x += Math.cos(this.swingCount) * 0.5;
+                if (this.y > canvas.height) { this.y = -20; this.x = Math.random() * canvas.width; }
+            }
+            draw() {
+                ctx.font = this.size + "px Arial";
+                ctx.globalAlpha = this.opacity;
+                ctx.fillText(this.text, this.x, this.y);
+            }
+        }
+        for (let i = 0; i < 45; i++) particles.push(new Particle());
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
